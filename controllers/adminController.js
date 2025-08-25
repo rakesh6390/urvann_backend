@@ -16,17 +16,10 @@ const loginAdmin = async (req, res) => {
       return res.status(400).json({ message: 'Please provide username and password' });
     }
 
-    const admin = await Admin.findOne({ username });
-
-    if (admin && (await admin.correctPassword(password, admin.password))) {
-      res.json({
-        _id: admin._id,
-        username: admin.username,
-        token: generateToken(admin._id)
-      });
-    } else {
-      res.status(401).json({ message: 'Invalid credentials' });
+    if(username !== process.env.ADMIN_USERNAME || password !== process.env.ADMIN_PASSWORD) {
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
+    return res.status(200).json({ token: generateToken(username) });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
