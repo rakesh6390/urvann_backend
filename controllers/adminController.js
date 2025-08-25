@@ -7,6 +7,11 @@ const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 };
 
+const ADMIN_USER = {
+  username: "admin",
+  password: "admin123", // should be hashed in real apps!
+};
+
 // Admin Login
 const loginAdmin = async (req, res) => {
   try {
@@ -16,9 +21,7 @@ const loginAdmin = async (req, res) => {
       return res.status(400).json({ message: 'Please provide username and password' });
     }
 
-    console.log(username, password, process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
-
-    if(username !== process.env.ADMIN_USERNAME || password !== process.env.ADMIN_PASSWORD) {
+    if(username !== ADMIN_USER.username || password !== ADMIN_USER.password) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
     return res.status(200).json({ token: generateToken(username) });
