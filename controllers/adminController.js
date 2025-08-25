@@ -16,6 +16,8 @@ const loginAdmin = async (req, res) => {
       return res.status(400).json({ message: 'Please provide username and password' });
     }
 
+    console.log(username, password, process.env.ADMIN_USERNAME, process.env.ADMIN_PASSWORD);
+
     if(username !== process.env.ADMIN_USERNAME || password !== process.env.ADMIN_PASSWORD) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
